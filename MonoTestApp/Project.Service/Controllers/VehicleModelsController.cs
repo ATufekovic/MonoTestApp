@@ -25,7 +25,7 @@ namespace MonoTestApp.Project.Service.Controllers
 
         // GET: api/VehicleModels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModel(string? sortBy, string? searchString)
+        public async Task<ActionResult<IEnumerable<VehicleModelInfo>>> GetVehicleModel(string? sortBy, string? searchString)
         {
           if (_context.VehicleModel == null)
           {
@@ -35,11 +35,22 @@ namespace MonoTestApp.Project.Service.Controllers
             var vehicleModelsQuery = from m in _context.VehicleModel select m;
             vehicleModelsQuery = SetSortAndFilter(vehicleModelsQuery, sortBy, searchString);
 
-            return await vehicleModelsQuery.ToListAsync();
+            var finalQuery = from m in vehicleModelsQuery
+                             select new VehicleModelInfo
+                             {
+                                 name = m.name,
+                                 abbr = m.abbr,
+                                 makerName = m.vehicleMake.name,
+                                 makerId = m.vehicleMakeId
+                             };
+
+            return await finalQuery.ToListAsync();
         }
 
+        //GET: api/VehicleModels/paged
+        //returns a list of paged vehicle models, together with vehicle maker name and id for external purposes
         [HttpGet("paged")]
-        public async Task<IPagedList<VehicleModel>> GetVehicleModel(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
+        public async Task<IPagedList<VehicleModelInfo>> GetVehicleModel(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
         {
             if (_context.VehicleMake == null)
             {
@@ -59,7 +70,16 @@ namespace MonoTestApp.Project.Service.Controllers
                 throw new ArgumentOutOfRangeException("Page size must be a whole integer larger than 0.");
             }
 
-            return await vehicleModelsQuery.ToPagedListAsync(page, pageSize);
+            var finalQuery = from m in vehicleModelsQuery
+                             select new VehicleModelInfo
+                             {
+                                 name = m.name,
+                                 abbr = m.abbr,
+                                 makerName = m.vehicleMake.name,
+                                 makerId = m.vehicleMakeId
+                             };
+
+            return await finalQuery.ToPagedListAsync(page, pageSize);
         }
 
         //sets the sort and filter for Vehicle Models
