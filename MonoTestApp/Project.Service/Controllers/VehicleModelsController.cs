@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MonoTestApp.Data;
 using MonoTestApp.Project.Service;
+using X.PagedList;
 
 namespace MonoTestApp.Project.Service.Controllers
 {
@@ -23,13 +25,71 @@ namespace MonoTestApp.Project.Service.Controllers
 
         // GET: api/VehicleModels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModel()
+        public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModel(string? sortBy, string? searchString)
         {
           if (_context.VehicleModel == null)
           {
               return NotFound();
           }
-            return await _context.VehicleModel.ToListAsync();
+
+            var vehicleModelsQuery = from m in _context.VehicleModel select m;
+            vehicleModelsQuery = SetSortAndFilter(vehicleModelsQuery, sortBy, searchString);
+
+            return await vehicleModelsQuery.ToListAsync();
+        }
+
+        [HttpGet("paged")]
+        public async Task<IPagedList<VehicleModel>> GetVehicleMake(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
+        {
+            if (_context.VehicleMake == null)
+            {
+                throw new InvalidOperationException("An invalid operation happened, the database seems empty!");
+            }
+
+            var vehicleModelsQuery = from m in _context.VehicleModel select m;
+            vehicleModelsQuery = SetSortAndFilter(vehicleModelsQuery, sortBy, searchString);
+
+            if (page <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Page number must be a whole integer larger than 0.");
+            }
+
+            if (pageSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Page size must be a whole integer larger than 0.");
+            }
+
+            return await vehicleModelsQuery.ToPagedListAsync(page, pageSize);
+        }
+
+        private IQueryable<VehicleModel> SetSortAndFilter(IQueryable<VehicleModel> vehicleModelQuery, string sortBy, string searchString)
+        {
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                //Set sorting to preset parameters, enforced by using a switch case block and a default case
+                switch (sortBy)
+                {
+                    case "name_desc":
+                        vehicleModelQuery = vehicleModelQuery.OrderByDescending(m => m.name);
+                        break;
+                    case "abbr":
+                        vehicleModelQuery = vehicleModelQuery.OrderBy(m => m.abbr);
+                        break;
+                    case "abbr_desc":
+                        vehicleModelQuery = vehicleModelQuery.OrderByDescending(m => m.abbr);
+                        break;
+                    default:
+                        vehicleModelQuery = vehicleModelQuery.OrderBy(m => m.name);
+                        break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                vehicleModelQuery = vehicleModelQuery.Where(m => m.name.Contains(searchString) || m.abbr.Contains(searchString));
+            }
+
+            return vehicleModelQuery;
         }
 
         // GET: api/VehicleModels/5
