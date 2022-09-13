@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MonoTestApp.Data;
 using MonoTestApp.Project.Service;
+
 using X.PagedList;
 
 namespace MonoTestApp.Project.Service.Controllers
@@ -38,6 +39,7 @@ namespace MonoTestApp.Project.Service.Controllers
         }
 
         // GET: api/VehicleMakes/paged, supports query string and gives back a paged list
+        // Dependency injection is kind of weird here, all packages use the same names (IPagedList, PagedList, etc.) so i don't mind leaving it like this, i just hope this is a good way
         [HttpGet("paged")]
         public async Task<IPagedList<VehicleMake>> GetVehicleMake(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
         {
