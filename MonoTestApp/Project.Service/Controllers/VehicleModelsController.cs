@@ -39,7 +39,7 @@ namespace MonoTestApp.Project.Service.Controllers
         }
 
         [HttpGet("paged")]
-        public async Task<IPagedList<VehicleModel>> GetVehicleMake(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
+        public async Task<IPagedList<VehicleModel>> GetVehicleModel(string? sortBy, string? searchString, int page = 1, int pageSize = 5)
         {
             if (_context.VehicleMake == null)
             {
@@ -62,6 +62,7 @@ namespace MonoTestApp.Project.Service.Controllers
             return await vehicleModelsQuery.ToPagedListAsync(page, pageSize);
         }
 
+        //sets the sort and filter for Vehicle Models
         private IQueryable<VehicleModel> SetSortAndFilter(IQueryable<VehicleModel> vehicleModelQuery, string sortBy, string searchString)
         {
             if (!string.IsNullOrEmpty(sortBy))
