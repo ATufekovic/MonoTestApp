@@ -20,7 +20,7 @@ namespace MonoTestApp.Project.Service
         public string abbr { get; set; }
 
         //maker can exists without models in its line, thus "NULL" -> "?"
-        public List<VehicleModel>? VehicleModels { get; set; }
+        public virtual List<VehicleModel>? VehicleModels { get; set; }
 
         public void PrintStatus()
         {

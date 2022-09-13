@@ -24,7 +24,7 @@ namespace MonoTestApp.Project.Service
         public int vehicleMakeId { get; set; }
 
         //can't set up model binding if not set as "NULL" -> "?", since it throws an error on creation
-        public VehicleMake? vehicleMake { get; set; }
+        public virtual VehicleMake? vehicleMake { get; set; }
 
         public void PrintStatus()
         {
