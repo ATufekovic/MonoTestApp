@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MonoTestApp.Data;
+using MonoTestApp.Project.Models;
 
-namespace MonoTestApp.Project.Service.DevelopmentTools
+namespace MonoTestApp.Project.DevelopmentTools
 {
     public class DatabaseSeeder
     {
@@ -22,48 +23,48 @@ namespace MonoTestApp.Project.Service.DevelopmentTools
                 context.VehicleMake.AddRange(
                     new VehicleMake
                     {
-                        name = "Toyota",
-                        abbr = "TYT"
+                        Name = "Toyota",
+                        Abbr = "TYT"
                     },
                     new VehicleMake
                     {
-                        name = "VolksWagen",
-                        abbr = "VW"
+                        Name = "VolksWagen",
+                        Abbr = "VW"
                     },
                     new VehicleMake
                     {
-                        name = "Bayeriche Motoren Werke",
-                        abbr = "BMW"
+                        Name = "Bayeriche Motoren Werke",
+                        Abbr = "BMW"
                     },
                     new VehicleMake
                     {
-                        name = "Lexus",
-                        abbr = "LXS"
+                        Name = "Lexus",
+                        Abbr = "LXS"
                     },
                     new VehicleMake
                     {
-                        name = "Audi",
-                        abbr = "AUD"
+                        Name = "Audi",
+                        Abbr = "AUD"
                     },
                     new VehicleMake
                     {
-                        name = "Nissan",
-                        abbr = "NSN"
+                        Name = "Nissan",
+                        Abbr = "NSN"
                     },
                     new VehicleMake
                     {
-                        name = "Peugeot",
-                        abbr = "PGT"
+                        Name = "Peugeot",
+                        Abbr = "PGT"
                     },
                     new VehicleMake
                     {
-                        name = "Mazda",
-                        abbr = "MZD"
+                        Name = "Mazda",
+                        Abbr = "MZD"
                     },
                     new VehicleMake
                     {
-                        name = "Honda",
-                        abbr = "HND"
+                        Name = "Honda",
+                        Abbr = "HND"
                     }
                 );
 
@@ -94,9 +95,9 @@ namespace MonoTestApp.Project.Service.DevelopmentTools
                         context.VehicleModel.Add(
                             new VehicleModel
                             {
-                                name = i.ToString() + "_test model for maker: " + maker.name,
-                                abbr = i.ToString() + "_TMFM: " + maker.abbr,
-                                vehicleMakeId = maker.id
+                                Name = i.ToString() + "_test model for maker: " + maker.Name,
+                                Abbr = i.ToString() + "_TMFM: " + maker.Abbr,
+                                VehicleMakeId = maker.Id
                             });
                     }
                     context.SaveChanges();

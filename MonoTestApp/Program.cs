@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MonoTestApp.Data;
-using MonoTestApp.Project.Service;
-using MonoTestApp.Project.Service.Controllers;
-using MonoTestApp.Project.Service.DevelopmentTools;
+using MonoTestApp.Project.DevelopmentTools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MonoTestAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MonoTestAppContext") ?? throw new InvalidOperationException("Connection string 'MonoTestAppContext' not found.")));
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -35,7 +34,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapControllers();
+//app.MapControllers();
 
 app.UseAuthorization();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MonoTestApp.Project.Service;
+using MonoTestApp.Project.Models.ServiceModels;
 
 namespace MonoTestApp.Data
 {
@@ -14,8 +14,8 @@ namespace MonoTestApp.Data
         {
         }
 
-        public DbSet<MonoTestApp.Project.Service.VehicleMake> VehicleMake { get; set; } = default!;
+        public DbSet<VehicleMake> VehicleMake { get; set; } = default!;
 
-        public DbSet<MonoTestApp.Project.Service.VehicleModel>? VehicleModel { get; set; }
+        public DbSet<VehicleModel>? VehicleModel { get; set; }
     }
 }
