@@ -11,81 +11,81 @@ using MonoTestApp.Data;
 namespace MonoTestApp.Migrations
 {
     [DbContext(typeof(MonoTestAppContext))]
-    [Migration("20220909131505_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220916063544_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("MonoTestApp.Project.Service.VehicleMake", b =>
+            modelBuilder.Entity("MonoTestApp.Project.Models.ServiceModels.VehicleMake", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("abbr")
+                    b.Property<string>("Abbr")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("VehicleMake");
                 });
 
-            modelBuilder.Entity("MonoTestApp.Project.Service.VehicleModel", b =>
+            modelBuilder.Entity("MonoTestApp.Project.Models.ServiceModels.VehicleModel", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("abbr")
+                    b.Property<string>("Abbr")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("vehicleMakeId")
+                    b.Property<int>("VehicleMakeId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("vehicleMakeId");
+                    b.HasIndex("VehicleMakeId");
 
                     b.ToTable("VehicleModel");
                 });
 
-            modelBuilder.Entity("MonoTestApp.Project.Service.VehicleModel", b =>
+            modelBuilder.Entity("MonoTestApp.Project.Models.ServiceModels.VehicleModel", b =>
                 {
-                    b.HasOne("MonoTestApp.Project.Service.VehicleMake", "vehicleMake")
+                    b.HasOne("MonoTestApp.Project.Models.ServiceModels.VehicleMake", "VehicleMake")
                         .WithMany("VehicleModels")
-                        .HasForeignKey("vehicleMakeId")
+                        .HasForeignKey("VehicleMakeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("vehicleMake");
+                    b.Navigation("VehicleMake");
                 });
 
-            modelBuilder.Entity("MonoTestApp.Project.Service.VehicleMake", b =>
+            modelBuilder.Entity("MonoTestApp.Project.Models.ServiceModels.VehicleMake", b =>
                 {
                     b.Navigation("VehicleModels");
                 });

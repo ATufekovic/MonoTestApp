@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MonoTestApp.Data;
-using MonoTestApp.Project.Models;
+using MonoTestApp.Project.Models.ServiceModels;
 
 namespace MonoTestApp.Project.DevelopmentTools
 {

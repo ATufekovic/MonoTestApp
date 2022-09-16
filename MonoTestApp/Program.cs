@@ -1,6 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using AutoMapper;
+using AutoMapper.Contrib.Autofac.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using MonoTestApp.Data;
 using MonoTestApp.Project.DevelopmentTools;
+using System.Web.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +18,12 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+//DI container
+var containerBuilder = new ContainerBuilder();
+containerBuilder.RegisterAutoMapper(typeof(Program).Assembly);
+var container = containerBuilder.Build();
+DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
 //Seed the database
 using (var scope = app.Services.CreateScope())

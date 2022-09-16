@@ -2,7 +2,7 @@
 
 namespace MonoTestApp.Project.Models.ViewModels
 {
-    public class VehicleMakeInfo : IMake
+    public class VehicleMakeView : IMake
     {
         public string Name { get; set; }
         public string Abbr { get; set; }

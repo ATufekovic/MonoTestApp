@@ -4,7 +4,7 @@
 
 namespace MonoTestApp.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,41 +12,41 @@ namespace MonoTestApp.Migrations
                 name: "VehicleMake",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    abbr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Abbr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleMake", x => x.id);
+                    table.PrimaryKey("PK_VehicleMake", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "VehicleModel",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    abbr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    vehicleMakeId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Abbr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    VehicleMakeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleModel", x => x.id);
+                    table.PrimaryKey("PK_VehicleModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VehicleModel_VehicleMake_vehicleMakeId",
-                        column: x => x.vehicleMakeId,
+                        name: "FK_VehicleModel_VehicleMake_VehicleMakeId",
+                        column: x => x.VehicleMakeId,
                         principalTable: "VehicleMake",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_VehicleModel_vehicleMakeId",
+                name: "IX_VehicleModel_VehicleMakeId",
                 table: "VehicleModel",
-                column: "vehicleMakeId");
+                column: "VehicleMakeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

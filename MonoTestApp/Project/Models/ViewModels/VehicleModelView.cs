@@ -3,7 +3,7 @@
 namespace MonoTestApp.Project.Models.ViewModels
 {
     //Only purpose is to be a container for displaying maker name alongside name and abbr
-    public class VehicleModelInfo : IModel
+    public class VehicleModelView : IModel
     {
         public string Name { get; set; }
         public string Abbr { get; set; }
