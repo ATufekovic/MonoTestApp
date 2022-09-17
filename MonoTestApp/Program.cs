@@ -21,9 +21,11 @@ var app = builder.Build();
 
 //DI container
 var containerBuilder = new ContainerBuilder();
-containerBuilder.RegisterAutoMapper(typeof(Program).Assembly);
+containerBuilder.RegisterAutoMapper(typeof(Program).Assembly, propertiesAutowired: true);
 var container = containerBuilder.Build();
 DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+var mapperConfiguration = container.Resolve<MapperConfiguration>();
+mapperConfiguration.AssertConfigurationIsValid();
 
 //Seed the database
 using (var scope = app.Services.CreateScope())
@@ -46,7 +48,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.MapControllers();
+app.MapDefaultControllerRoute();
 
 app.UseAuthorization();
 

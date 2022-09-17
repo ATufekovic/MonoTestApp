@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MonoTestApp.Project.Models.ServiceModels;
+using MonoTestApp.Project.Service.Models.ServiceModels;
 
 namespace MonoTestApp.Data
 {

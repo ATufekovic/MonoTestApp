@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using MonoTestApp.Project.Models.ServiceModels;
-using MonoTestApp.Project.Models.ViewModels;
+using MonoTestApp.Project.Service.Models.ServiceModels;
+using MonoTestApp.Project.Service.Models.ViewModels;
 using System.Runtime.Intrinsics.X86;
 
-namespace MonoTestApp.Project.Models.Profiles
+namespace MonoTestApp.Project.Service.Models.Profiles
 {
     public class VehicleMakeProfile : Profile
     {

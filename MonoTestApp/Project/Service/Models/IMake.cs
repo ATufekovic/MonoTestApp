@@ -1,4 +1,4 @@
-﻿namespace MonoTestApp.Project.Models
+﻿namespace MonoTestApp.Project.Service.Models
 {
     public interface IMake
     {

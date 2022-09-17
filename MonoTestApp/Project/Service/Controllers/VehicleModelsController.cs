@@ -12,42 +12,43 @@ using MonoTestApp.Project.Service.Models.ServiceModels;
 using MonoTestApp.Project.Service.Models.ViewModels;
 using MonoTestApp.Project.Views.DataManipulation;
 using System.Data.Entity.Validation;
+using System.Globalization;
 
 namespace MonoTestApp.Project.Controllers
 {
-    public class VehicleMakesController : Controller
+    public class VehicleModelsController : Controller
     {
         private readonly MonoTestAppContext _context;
         private readonly IMapper _mapper;
 
-        public VehicleMakesController(MonoTestAppContext context)
+        public VehicleModelsController(MonoTestAppContext context)
         {
             _context = context;
             _mapper = AutofacDependencyResolver.Current.ApplicationContainer.Resolve<IMapper>();
-            
+
         }
 
-        // GET: GetVehicleMakes
-        public async Task<ActionResult<IEnumerable<VehicleMakeView>>> GetVehicleMakes(string? searchBy, string? sortBy, int? page, int? pageSize)
+        // GET: VehicleModels
+        public async Task<ActionResult<IEnumerable<VehicleModelView>>> GetVehicleModels(string? searchBy, string? sortBy, int? page, int? pageSize)
         {
-            if (_context.VehicleMake == null)
+            if (_context.VehicleModel == null)
             {
                 return NotFound();
             }
-            
-            var query = from m in _context.VehicleMake select m;
+
+            var query = from m in _context.VehicleModel select m;
 
             //deal with filtering and sorting
             if (!string.IsNullOrEmpty(searchBy))
             {
-                query = VehicleFilter.SearchVehicleMake(query, searchBy);
+                query = VehicleFilter.SearchVehicleModel(query, searchBy);
             }
-            if(!string.IsNullOrEmpty(sortBy))
+            if (!string.IsNullOrEmpty(sortBy))
             {
-                query = VehicleSort.SortVehicleMake(query, sortBy);
+                query = VehicleSort.SortVehicleModel(query, sortBy);
             }
 
-            var converted = query.ProjectTo<VehicleMakeView>(_mapper.ConfigurationProvider);
+            var converted = query.ProjectTo<VehicleModelView>(_mapper.ConfigurationProvider);
 
             //if it exists, deal with pagination
             if (page <= 0 || page == null)
@@ -58,46 +59,46 @@ namespace MonoTestApp.Project.Controllers
             {
                 pageSize = 5;
             }
-            var paginated = VehiclePagination.PageVehicleMakeViewAsync(converted, (int)page, (int)pageSize);
+            var paginated = VehiclePagination.PageVehicleModelViewAsync(converted, (int)page, (int)pageSize);
             return View(await paginated);
         }
 
-        // GET: VehicleMake by id
-        public async Task<ActionResult<VehicleMakeView>> GetVehicleMake(int? id)
+        // GET: VehicleModel/id
+        public async Task<ActionResult<VehicleModelView>> GetVehicleModel(int? id)
         {
-            if (id == null || _context.VehicleMake == null)
+            if (id == null || _context.VehicleModel == null)
             {
                 return NotFound();
             }
 
-            var queryResult = await _context.VehicleMake.FirstOrDefaultAsync(m => m.Id == id);
+            var queryResult = await _context.VehicleModel.FirstOrDefaultAsync(m => m.Id == id);
 
             if (queryResult == null)
             {
                 return NotFound();
             }
-            
-            var finalResult = _mapper.Map<VehicleMakeView>(queryResult);
+
+            var finalResult = _mapper.Map<VehicleModelView>(queryResult);
 
             return View(finalResult);
         }
 
-        // GET: VehicleMake/Create view
+        // GET: VehicleModel/Create view
         public ActionResult Create()
         {
             //TODO: create new "CREATE view" for editing a new entry
             return View();
         }
 
-        // POST: VehicleMake/Create
+        // POST: VehicleModel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Name,Abbr")] VehicleMake vehicleMake)
+        public async Task<ActionResult> Create([Bind("Name,Abbr,VehicleMakeId")] VehicleModel vehicleModel)
         {
             //TODO: custom validation with OnModelCreating and try-catch block? Most of these cases are caught with the Data Annotations.
             if (ModelState.IsValid)
             {
-                _context.Add(vehicleMake);
+                _context.Add(vehicleModel);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index");
@@ -106,33 +107,33 @@ namespace MonoTestApp.Project.Controllers
             return View();
         }
 
-        // GET: VehicleMake/Edit/5
+        // GET: VehicleModel/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            if (id == null || _context.VehicleMake == null)
+            if (id == null || _context.VehicleModel == null)
             {
                 return NotFound();
             }
 
-            var queryResult = await _context.VehicleMake.FirstOrDefaultAsync(m => m.Id == id);
+            var queryResult = await _context.VehicleModel.FirstOrDefaultAsync(m => m.Id == id);
 
             if (queryResult == null)
             {
                 return NotFound();
             }
 
-            var finalResult = _mapper.Map<VehicleMakeView>(queryResult);
+            var finalResult = _mapper.Map<VehicleModelView>(queryResult);
 
-            //TODO: view for editing car makes
+            //TODO: view for editing car models
             return View(finalResult);
         }
 
-        // POST: VehicleMake/Edit/5
+        // POST: VehicleModel/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, [Bind("Id,Name,Abbr")] VehicleMake vehicleMake)
+        public async Task<ActionResult> Edit(int id, [Bind("Id,Name,Abbr,VehicleMakeId")] VehicleModel vehicleModel)
         {
-            if(id != vehicleMake.Id)
+            if (id != vehicleModel.Id)
             {
                 return NotFound();
             }
@@ -141,15 +142,16 @@ namespace MonoTestApp.Project.Controllers
             {
                 try
                 {
-                    _context.Update(vehicleMake);
+                    _context.Update(vehicleModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
-                    if((_context.VehicleMake?.Any(vm=>vm.Id == vehicleMake.Id)).GetValueOrDefault())
+                    if ((_context.VehicleModel?.Any(vm => vm.Id == vehicleModel.Id)).GetValueOrDefault())
                     {
                         return NotFound();
-                    } else
+                    }
+                    else
                     {
                         throw ex;
                     }
@@ -158,39 +160,39 @@ namespace MonoTestApp.Project.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(vehicleMake);
+            return View(vehicleModel);
         }
 
-        // GET: VehicleMake/Delete/5
+        // GET: VehicleModel/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            if(id == null || _context.VehicleMake == null)
+            if (id == null || _context.VehicleModel == null)
             {
                 return NotFound();
             }
 
-            var vehicleMake = await _context.VehicleMake.FirstOrDefaultAsync(vm => vm.Id == id);
-            if(vehicleMake == null)
+            var vehicleModel = await _context.VehicleModel.FirstOrDefaultAsync(vm => vm.Id == id);
+            if (vehicleModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicleMake);
+            return View(vehicleModel);
         }
 
-        // POST: VehicleMake/Delete/5
+        // POST: VehicleModel/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            if(id == null || _context.VehicleMake == null)
+            if (id == null || _context.VehicleModel == null)
             {
                 return NotFound();
             }
-            var vehicleMake = await _context.VehicleMake.FindAsync(id);
-            if(vehicleMake != null)
+            var vehicleModel = await _context.VehicleModel.FindAsync(id);
+            if (vehicleModel != null)
             {
-                _context.VehicleMake.Remove(vehicleMake);
+                _context.VehicleModel.Remove(vehicleModel);
             }
 
             await _context.SaveChangesAsync();

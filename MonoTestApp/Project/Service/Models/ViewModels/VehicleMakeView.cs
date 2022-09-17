@@ -1,6 +1,6 @@
-﻿using MonoTestApp.Project.Models;
+﻿using MonoTestApp.Project.Service.Models;
 
-namespace MonoTestApp.Project.Models.ViewModels
+namespace MonoTestApp.Project.Service.Models.ViewModels
 {
     public class VehicleMakeView : IMake
     {

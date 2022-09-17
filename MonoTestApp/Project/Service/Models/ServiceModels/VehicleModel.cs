@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MonoTestApp.Project.Models.ServiceModels
+namespace MonoTestApp.Project.Service.Models.ServiceModels
 {
     public class VehicleModel : IModel
     {

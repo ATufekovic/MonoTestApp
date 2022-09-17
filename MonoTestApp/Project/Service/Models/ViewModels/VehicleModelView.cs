@@ -1,6 +1,6 @@
-﻿using MonoTestApp.Project.Models;
+﻿using MonoTestApp.Project.Service.Models;
 
-namespace MonoTestApp.Project.Models.ViewModels
+namespace MonoTestApp.Project.Service.Models.ViewModels
 {
     //Only purpose is to be a container for displaying maker name alongside name and abbr
     public class VehicleModelView : IModel
